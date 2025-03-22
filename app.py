@@ -27,6 +27,9 @@ fire_sound = mixer.Sound('fire.ogg')
 
 font.init()
 font2 = font.Font(None, 36)
+font1 = font.Font(None, 80)
+win = font1.render("YOU WIN~!", True, (255, 255, 255))
+lose = font1.render("YOU LOSE~!", True, (180, 0, 0))
 
 score = 0
 lost = 0
@@ -114,6 +117,22 @@ while run:
         monsters.draw(window)
         bullets.update()
         bullets.draw(window)
+
+        collides = sprite.groupcollide(monsters, bullets, True, True)
+        for c in collides:
+            score = score + 1
+            monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 80, 50, randint(1,5))
+            monsters.add(monster)
+
+        if sprite.spritecollide(ship, monsters, False) or lost >= max_lost:
+            finish = True
+            window.blit(lose, (200, 200))
+
+
+        if score >= goal:
+            finish = True
+            window.blit(win, (200, 200))
+
 
 
     display.update()
